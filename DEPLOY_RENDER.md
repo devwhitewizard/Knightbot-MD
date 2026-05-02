@@ -1,23 +1,8 @@
-# How to Deploy Knightbot-MD to Render
+# How to Deploy Knightbot-MD to Render (Persistent & Free)
 
-Follow these steps to deploy your bot to Render and keep it running 24/7 with session persistence.
+This method allows you to run your bot on **Render's Free Tier** without needing a computer or "Persistent Disk". Ideal for non-tech users!
 
-## Step 1: Generate your SESSION_ID
-Since Render's free tier deletes files when the bot restarts, you need to use a `SESSION_ID` to stay logged in.
-
-1. Run your bot on your computer first (`npm start`).
-2. Link your WhatsApp.
-3. Once connected, stop the bot (Ctrl+C).
-4. Run this command in your terminal to get your `SESSION_ID`:
-   ```bash
-   node -e "const fs=require('fs'); console.log('KnightBot;;' + fs.readFileSync('./session/creds.json').toString('base64'))"
-   ```
-5. **Copy the long string** it outputs (starting with `KnightBot;;`). This is your session key.
-
-## Step 2: Push your code to GitHub
-Make sure your latest code (including the changes I made) is uploaded to a private or public GitHub repository.
-
-## Step 3: Create a Render Web Service
+## Step 1: Create a Render Web Service
 1. Go to [Render Dashboard](https://dashboard.render.com).
 2. Click **New +** and select **Web Service**.
 3. Connect your GitHub repository.
@@ -27,12 +12,31 @@ Make sure your latest code (including the changes I made) is uploaded to a priva
    - **Build Command:** `npm install`
    - **Start Command:** `node index.js`
 5. Click **Advanced** to add **Environment Variables**:
-   - `SESSION_ID`: (Paste the long string you copied in Step 1)
+   - `OWNER_NUMBER`: Your phone number with country code (e.g., `254712345678`).
    - `PORT`: `3000`
-   - `TZ`: `Asia/Jakarta` (or your timezone, e.g., `Africa/Nairobi`)
+   - `TZ`: Your timezone (e.g., `Africa/Nairobi`).
+6. Click **Create Web Service**.
 
-## Step 4: Deploy!
-Click **Create Web Service**. Once the deployment is finished, your bot will connect automatically. You can check the logs to see the "Bot Connected Successfully!" message.
+## Step 2: Link your WhatsApp (Pairing Code)
+1. Wait for Render to build the service.
+2. Open the **Logs** tab in Render.
+3. Look for a line that says: `Your Pairing Code : XXXX-XXXX`.
+4. Open WhatsApp on your phone -> Settings -> Linked Devices -> Link a Device -> **Link with phone number instead**.
+5. Enter the code shown in the Render logs.
+
+## Step 3: Enable Permanent Persistence
+Since Render's free tier forgets sessions when it restarts, the bot will automatically generate a "Session Key" for you once you link it.
+
+1. Once linked, the bot will send you a message on WhatsApp with your `SESSION_ID`. 
+2. It will also print it in the Render logs.
+3. **Copy that long string** (starting with `KnightBot;;`).
+4. Go back to Render Dashboard -> **Settings** -> **Environment Variables**.
+5. Add a new variable:
+   - Key: `SESSION_ID`
+   - Value: (Paste your long string here)
+6. Click **Save Changes**.
+
+Done! Your bot is now permanently connected and will survive restarts automatically.
 
 ---
-**Note:** If you ever log out or the session expires, just repeat Step 1 and update the `SESSION_ID` in the Render dashboard.
+**Troubleshooting:** If the bot stops responding, delete the `SESSION_ID` variable in Render and repeat the steps above to get a fresh one.

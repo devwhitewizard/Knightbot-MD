@@ -70,7 +70,7 @@ setInterval(() => {
     }
 }, 30_000) // check every 30 seconds
 
-let phoneNumber = "911234567890"
+let phoneNumber = process.env.OWNER_NUMBER || "911234567890"
 let owner = JSON.parse(fs.readFileSync('./data/owner.json'))
 
 // Allow overriding session directory (useful for Render Persistent Disks)
@@ -310,6 +310,25 @@ async function startXeonBotInc() {
             } catch (e) { global.botInfo = null }
             console.log(chalk.magenta(` `))
             console.log(chalk.yellow(`🌿Connected to => ` + JSON.stringify(XeonBotInc.user, null, 2)))
+
+            // Auto-generate SESSION_ID for non-tech users on first connect
+            try {
+                const credsPath = path.join(SESSION_DIR, 'creds.json')
+                if (fs.existsSync(credsPath)) {
+                    const sessionData = fs.readFileSync(credsPath, 'utf8')
+                    const sessionId = 'KnightBot;;' + Buffer.from(sessionData).toString('base64')
+                    
+                    console.log(chalk.green('\n📢 [SESSION_ID GENERATED] Copy this for persistence:'))
+                    console.log(chalk.cyan(sessionId))
+                    console.log(chalk.green('--------------------------------------------------\n'))
+                    
+                    // Also send it to the bot number or owner number
+                    const botNumber = XeonBotInc.user.id.split(':')[0] + '@s.whatsapp.net';
+                    await XeonBotInc.sendMessage(botNumber, {
+                        text: `🤖 *Session ID Generated!*\n\nCopy the string below and add it as \`SESSION_ID\` in your Render Environment Variables to keep the bot connected forever:\n\n\`${sessionId}\``
+                    });
+                }
+            } catch (e) { console.error('Error generating session string:', e) }
 
             try {
                 const botNumber = XeonBotInc.user.id.split(':')[0] + '@s.whatsapp.net';
