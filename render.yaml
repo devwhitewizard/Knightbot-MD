@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: knightbot-md
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node index.js
+    envVars:
+      - key: SESSION_DIR
+        value: /mnt/session
+        sync: false
+      - key: PORT
+        value: ${PORT}
+        sync: false

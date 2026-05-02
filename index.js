@@ -73,6 +73,22 @@ setInterval(() => {
 let phoneNumber = "911234567890"
 let owner = JSON.parse(fs.readFileSync('./data/owner.json'))
 
+// Allow overriding session directory (useful for Render Persistent Disks)
+const SESSION_DIR = process.env.SESSION_DIR || './session'
+
+// Minimal HTTP server for Render health checks (no extra deps)
+const http = require('http')
+const PORT = process.env.PORT || 3000
+http.createServer((req, res) => {
+    if (req.url === '/health' || req.url === '/') {
+        res.writeHead(200, { 'Content-Type': 'text/plain' })
+        res.end('OK')
+        return
+    }
+    res.writeHead(404, { 'Content-Type': 'text/plain' })
+    res.end('Not Found')
+}).listen(PORT, () => console.log(`🛰️  Health server listening on port ${PORT}`))
+
 global.botname = "KNIGHT BOT"
 global.themeemoji = "•"
 const pairingCode = !!phoneNumber || process.argv.includes("--pairing-code")
@@ -93,7 +109,7 @@ const question = (text) => {
 async function startXeonBotInc() {
     try {
         let { version, isLatest } = await fetchLatestBaileysVersion()
-        const { state, saveCreds } = await useMultiFileAuthState(`./session`)
+    const { state, saveCreds } = await useMultiFileAuthState(SESSION_DIR)
         const msgRetryCounterCache = new NodeCache()
 
         const XeonBotInc = makeWASocket({
@@ -298,7 +314,7 @@ async function startXeonBotInc() {
             
             if (statusCode === DisconnectReason.loggedOut || statusCode === 401) {
                 try {
-                    rmSync('./session', { recursive: true, force: true })
+                    rmSync(SESSION_DIR, { recursive: true, force: true })
                     console.log(chalk.yellow('Session folder deleted. Please re-authenticate.'))
                 } catch (error) {
                     console.error('Error deleting session:', error)

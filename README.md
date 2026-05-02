@@ -242,3 +242,25 @@ Copyright (c) 2024 Professor. All rights reserved.
 This project contains code from various open source projects:
 - Baileys (MIT License)
 - Other libraries as listed in package.json
+
+---
+
+## 🚀 Deploying on Render
+
+You can deploy this bot on Render as a Web Service so Render will keep it running and provide a PORT for health checks.
+
+1. Create a new Web Service on Render and connect your GitHub repo.
+2. Set the Start Command to:
+
+  node index.js
+
+3. Add the following environment variables in Render dashboard:
+   - PORT (Render provides this automatically)
+   - SESSION_DIR (optional) — set to a persistent disk path if you attach one, e.g. `/mnt/session`.
+
+4. Deploy. Render will call the health endpoint at `/health` to ensure the service is up.
+
+Notes:
+- Upload your `session` folder credentials (creds/*) to the `SESSION_DIR` or use the Pairing Code flow to connect.
+- If you need persistent storage on Render, attach a Persistent Disk and set `SESSION_DIR` to that mount.
+
