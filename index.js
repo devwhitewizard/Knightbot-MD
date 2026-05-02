@@ -76,18 +76,48 @@ let owner = JSON.parse(fs.readFileSync('./data/owner.json'))
 // Allow overriding session directory (useful for Render Persistent Disks)
 const SESSION_DIR = process.env.SESSION_DIR || './session'
 
-// Minimal HTTP server for Render health checks (no extra deps)
+// Session persistence for Render (allows using a base64 encoded creds.json)
+if (process.env.SESSION_ID) {
+    if (!fs.existsSync(SESSION_DIR)) {
+        fs.mkdirSync(SESSION_DIR, { recursive: true })
+    }
+    const credsPath = path.join(SESSION_DIR, 'creds.json')
+    if (!fs.existsSync(credsPath)) {
+        console.log('📦 SESSION_ID found, decoding and creating creds.json...')
+        try {
+            // Check if it's "KnightBot;;" prefix (standard for many session generators)
+            let sessionData = process.env.SESSION_ID
+            if (sessionData.includes('KnightBot;;')) {
+                sessionData = sessionData.split('KnightBot;;')[1]
+            }
+            const decoded = Buffer.from(sessionData, 'base64').toString('utf-8')
+            fs.writeFileSync(credsPath, decoded)
+            console.log('✅ Session restored successfully')
+        } catch (error) {
+            console.error('❌ Failed to decode SESSION_ID:', error.message)
+        }
+    }
+}
+
+// Minimal HTTP server for Render health checks and status (no extra deps)
 const http = require('http')
 const PORT = process.env.PORT || 3000
+global.botConnected = false
+global.botInfo = null
 http.createServer((req, res) => {
     if (req.url === '/health' || req.url === '/') {
         res.writeHead(200, { 'Content-Type': 'text/plain' })
         res.end('OK')
         return
     }
+    if (req.url === '/status') {
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(JSON.stringify({ connected: !!global.botConnected, info: global.botInfo || {} }))
+        return
+    }
     res.writeHead(404, { 'Content-Type': 'text/plain' })
     res.end('Not Found')
-}).listen(PORT, () => console.log(`🛰️  Health server listening on port ${PORT}`))
+}).listen(PORT, () => console.log(`🛰️  Health/status server listening on port ${PORT}`))
 
 global.botname = "KNIGHT BOT"
 global.themeemoji = "•"
@@ -274,6 +304,10 @@ async function startXeonBotInc() {
         }
         
         if (connection == "open") {
+            global.botConnected = true
+            try {
+                global.botInfo = XeonBotInc.user || null
+            } catch (e) { global.botInfo = null }
             console.log(chalk.magenta(` `))
             console.log(chalk.yellow(`🌿Connected to => ` + JSON.stringify(XeonBotInc.user, null, 2)))
 
@@ -307,6 +341,7 @@ async function startXeonBotInc() {
         }
         
         if (connection === 'close') {
+            global.botConnected = false
             const shouldReconnect = (lastDisconnect?.error)?.output?.statusCode !== DisconnectReason.loggedOut
             const statusCode = lastDisconnect?.error?.output?.statusCode
             

@@ -6,9 +6,11 @@ services:
     buildCommand: npm install
     startCommand: node index.js
     envVars:
-      - key: SESSION_DIR
-        value: /mnt/session
+      - key: SESSION_ID
         sync: false
       - key: PORT
-        value: ${PORT}
-        sync: false
+        value: 3000
+      - key: NODE_VERSION
+        value: 18.20.2
+      - key: TZ
+        value: Asia/Jakarta
