@@ -63,10 +63,18 @@ setInterval(() => {
 
 // Memory monitoring - Restart if RAM gets too high
 setInterval(() => {
-    const used = process.memoryUsage().rss / 1024 / 1024
-    if (used > 400) {
-        console.log('⚠️ RAM too high (>400MB), restarting bot...')
-        process.exit(1) // Panel will auto-restart
+    const memory = process.memoryUsage()
+    const rss = memory.rss / 1024 / 1024
+    const heap = memory.heapUsed / 1024 / 1024
+    
+    // Log memory usage occasionally (every 5 minutes or if high)
+    if (Math.random() < 0.1 || rss > 350) { 
+        console.log(`📊 Memory Usage: RSS: ${rss.toFixed(2)}MB, Heap: ${heap.toFixed(2)}MB`)
+    }
+
+    if (rss > 450) { // Increased slightly since we have more flags now
+        console.log(`⚠️ CRITICAL: RAM usage is too high (${rss.toFixed(2)}MB). Restarting process to maintain stability on Render Free Tier...`)
+        process.exit(1) // Process will auto-restart
     }
 }, 30_000) // check every 30 seconds
 
@@ -117,7 +125,7 @@ http.createServer((req, res) => {
     }
     res.writeHead(404, { 'Content-Type': 'text/plain' })
     res.end('Not Found')
-}).listen(PORT, () => console.log(`🛰️  Health/status server listening on port ${PORT}`))
+}).listen(PORT, '0.0.0.0', () => console.log(`🛰️  Health/status server listening on port ${PORT}`))
 
 global.botname = settings.botName || "KNIGHT BOT"
 global.themeemoji = "•"

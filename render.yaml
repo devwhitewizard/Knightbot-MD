@@ -3,6 +3,7 @@ services:
     name: knightbot-md
     env: docker
     plan: free
+    region: oregon
     envVars:
       - key: OWNER_NUMBER
         sync: false
@@ -10,7 +11,5 @@ services:
         sync: false
       - key: PORT
         value: 3000
-      - key: NODE_VERSION
-        value: 18.20.2
       - key: TZ
-        value: Asia/Jakarta
+        value: UTC
