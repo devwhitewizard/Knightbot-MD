@@ -3,7 +3,8 @@ const settings = {
   author: '‎',
   botName: "Alphonce Bot",
   botOwner: 'Alphonce', // Your name
-  ownerNumber: '254712162448', //Set your number here without + symbol, just add country code & number without any space
+  ownerNumber: '254712162448', //Set your number here without + symbol
+  sessionId: "KnightBot;;YOUR_SESSION_HERE", // Optional: Put your session here if you don't want to use Render Env Vars
   giphyApiKey: 'qnl7ssQChTdPjsKta2Ax2LMaGXz303tq',
   commandMode: "public",
   maxStoreMessages: 20, 

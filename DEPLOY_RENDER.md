@@ -1,26 +1,25 @@
-# 🚀 Deploying Knightbot-MD to Render (Easy Guide)
+# 🚀 Deploying Knightbot-MD to Render (Simplified Flow)
 
-This guide is designed for non-tech users. Follow these 3 simple steps to get your bot running 24/7.
+This guide is designed for the easiest setup. 
 
----
+### 📋 Pre-Deployment (GitHub):
+1.  Open **[settings.js](Knightbot-MD/settings.js)** on GitHub.
+2.  Edit the `botName` and `ownerNumber` directly in the file.
+3.  **Commit changes** (Save the file).
 
 ### 🟢 Step 1: Create your Bot Service on Render
 1. Go to your [Render Dashboard](https://dashboard.render.com).
 2. Click the **"New +"** button and select **"Web Service"**.
 3. Connect your **GitHub Repository**.
-4. Fill in these details:
+4. Fill in these details (Select **Docker**):
    - **Name:** `knightbot`
-   - **Environment:** `Node`
-   - **Build Command:** `npm install`
-   - **Start Command:** `node index.js`
-5. Click **"Advanced"** and add these **Environment Variables**:
-   - `OWNER_NUMBER`: Your phone number (e.g., `254712345678`)
-   - `TZ`: Your timezone (e.g., `Africa/Nairobi`)
-6. Click **"Deploy Web Service"** (or just **"Deploy"**).
+   - **Environment:** `Docker`
+5. Click **"Advanced"** and add **ONE** Environment Variable:
+   - **Key:** `SESSION_ID`
+   - **Value:** (Paste your Session string starting with `KnightBot;;`)
+6. Click **"Deploy Web Service"**.
 
 ---
-
-### 🔵 Step 2: Link your WhatsApp (Pairing)
 1. Wait about 2–3 minutes for the "Build" to finish.
 2. Click on the **"Logs"** tab on the left side of your Render screen.
 3. Look for a line that says: **`Your Pairing Code : XXXX-XXXX`**.
@@ -33,9 +32,10 @@ This guide is designed for non-tech users. Follow these 3 simple steps to get yo
 
 ### 🟡 Step 3: Save your Login (IMPORTANT)
 Render's free version "remembers" your login for only 24 hours. To make it permanent:
-1. Once you link the bot, **the bot will send you a message on WhatsApp**.
-2. That message contains a very long **"Session Key"**.
-3. **Copy that long string** (it looks like a lot of random characters).
+1. Once you link the bot, **the bot will send YOU a message on WhatsApp**.
+2. **Check your own WhatsApp chat** (or the chat from the bot number).
+3. Look for a message saying: **"🤖 Session ID Generated!"**.
+4. **Copy that long string** (starting with `KnightBot;;`).
 4. Go back to Render -> **Settings** -> **Environment Variables**.
 5. Click **"Add Environment Variable"**:
    - **Key:** `SESSION_ID`

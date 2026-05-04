@@ -70,14 +70,15 @@ setInterval(() => {
     }
 }, 30_000) // check every 30 seconds
 
-let phoneNumber = process.env.OWNER_NUMBER || "911234567890"
+let phoneNumber = process.env.OWNER_NUMBER || settings.ownerNumber || "254712162448"
 let owner = JSON.parse(fs.readFileSync('./data/owner.json'))
 
 // Allow overriding session directory (useful for Render Persistent Disks)
 const SESSION_DIR = process.env.SESSION_DIR || './session'
 
 // Session persistence for Render (allows using a base64 encoded creds.json)
-if (process.env.SESSION_ID) {
+const SESSION_DATA = process.env.SESSION_ID || settings.sessionId
+if (SESSION_DATA && SESSION_DATA !== "KnightBot;;YOUR_SESSION_HERE") {
     if (!fs.existsSync(SESSION_DIR)) {
         fs.mkdirSync(SESSION_DIR, { recursive: true })
     }
@@ -85,8 +86,7 @@ if (process.env.SESSION_ID) {
     if (!fs.existsSync(credsPath)) {
         console.log('📦 SESSION_ID found, decoding and creating creds.json...')
         try {
-            // Check if it's "KnightBot;;" prefix (standard for many session generators)
-            let sessionData = process.env.SESSION_ID
+            let sessionData = SESSION_DATA
             if (sessionData.includes('KnightBot;;')) {
                 sessionData = sessionData.split('KnightBot;;')[1]
             }
@@ -119,7 +119,7 @@ http.createServer((req, res) => {
     res.end('Not Found')
 }).listen(PORT, () => console.log(`🛰️  Health/status server listening on port ${PORT}`))
 
-global.botname = "KNIGHT BOT"
+global.botname = settings.botName || "KNIGHT BOT"
 global.themeemoji = "•"
 const pairingCode = !!phoneNumber || process.argv.includes("--pairing-code")
 const useMobile = process.argv.includes("--mobile")
@@ -322,7 +322,6 @@ async function startXeonBotInc() {
                     console.log(chalk.cyan(sessionId))
                     console.log(chalk.green('--------------------------------------------------\n'))
                     
-                    // Also send it to the bot number or owner number
                     const botNumber = XeonBotInc.user.id.split(':')[0] + '@s.whatsapp.net';
                     await XeonBotInc.sendMessage(botNumber, {
                         text: `🤖 *Session ID Generated!*\n\nCopy the string below and add it as \`SESSION_ID\` in your Render Environment Variables to keep the bot connected forever:\n\n\`${sessionId}\``

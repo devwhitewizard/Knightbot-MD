@@ -16,9 +16,9 @@ RUN npm install
 # Copy the rest of the application
 COPY . .
 
-# Expose the default Hugging Face Spaces port
-EXPOSE 7860
-ENV PORT 7860
+# Expose the default Render port
+EXPOSE 3000
+ENV PORT 3000
 
 # Start the bot
 CMD ["node", "index.js"]
