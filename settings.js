@@ -1,10 +1,10 @@
 const settings = {
   packname: 'Knight Bot',
   author: '‎',
-  botName: "Alphonce Bot",
-  botOwner: 'Alphonce', // Your name
-  ownerNumber: '254712162448', //Set your number here without + symbol
-  sessionId: "KnightBot;;KnightBot!H4sIAAAAAAAAA5VU27KiOBT9l7xqtQKRi1WnagBRUVQU8TbVDxECRiEgCaB2+e9dePp098NMz5m33GrttfdaK98AzQjDU3wH/W8gL0iFOG6W/J5j0AdGGUW4AG0QIo5AH2S25J28jmfIEI9uzliP0kytLyeSCtk6bfmbRF1vHysyFus38GyDvDwmJPgDoLlIShvuLg6ap4c8gHIXjSI37U084VFJy9ym2kmsPDYc2G/g2SAiUhAaW/kJp7hAyRTfXUSKz9H3Fhd5Pz+rppBTxqbuIknNVcXwLYvWCekUq3EidvXJbiTtP0f/6I3msfw4KDPuoImXBTJ0DdGZcHE6qLz8djeVlQCFo5l23+kzElMc2iGmnPD7p+euDo6d0E0vK9+abaWqcB6P6UV7qGNrZfWUwT7VnA05rpg/XH6O+LYILcuGG+s0wH5u3qZ+dvUirYbzMKcd9Qr13YJK8n5E2e/E3eLDK5f/M/d6asfU1vklSBMzdTZ6a/+obqJqkxROyoBi+dK7CqYyGX+Sftjyh0FSj4bjzkxdphetJRfiXl6m/mp/2OUduxXSm+SE4V39RR/xsvgTS7Os6c0zyylf6svevOPI64Qph96Au62evvE3100WzoxhV5p59vUQFvV+F9fQqKksLm64cziG2jioNUmK3HSQbesN3J7it1dHF3y3Q9AXnm1Q4JgwXiBOMtqcibDXBiisPBwUmL/GC2CndXH2JR70uJc9WJlfi6qTCksmCfOHedSs/Nyl3Wyhn+w30AZ5kQWYMRyOCeNZcZ9hxlCMGej//bUNKL7xd+GacpLQBhEpGPdpmScZCj9U/bhEQZCVlHt3GpjNAheg3/11jDknNGbNHEuKiuBEKmyeEGegH6GE4Z8d4gKHoM+LEv9MrZmFzeDd9c5ThlAHbZC+BCEh6AOxBxVNUYQehL2+qP7FvtQNLMrzLxRz0AbJ65mgQU2WRUnQFChIcvOyuXj+ZNgAhpgjkrBG1JliMWQPrYViwUAdjXQr1s24qf3R0Yc13kdfnTwNKv5pYc7mZ3MqdwwtVhM3RngXZ2KKtZZgPhIHbWj37R9AQB/kli8mhp/YOM/hLbLEIkC4VK8OuZ/UpRnuptkI+pPJ3DjvdvDgRkdnPDOcVXVgxN+fq8ROVBq51YFWqb7Yni35oRnLt6ZaiCsS4N+LVWHiW9PTRSTeIAhHC2kbKbJ8MJTZYNupr3zTczY2dHf5fqDPoLEd01sgXsbX3L1lmj4XJe02Y+gYp3GsL2vPeNB4TJbvpn2FJvnxWZGXnRqtmm1E8Cv7FDUK/rd278Qbi3Wf7d8wfvwm/5JI4wj9Ci8Eex2fB/ualFUd7d3JGo5oAqfznFYRX7KeJyYHDTyfX9sgTxCPsiIFfYBoWGQkBG1QZGXjWZtG2Z/ir1/swTI2m84TxLj+KwdrkmLGUZqDvqAoiqr2VAE+vwMbGQcuPQcAAA==", // Optional: Put your session here if you don't want to use Render Env Vars
+  botName: "Knightbot Bot",
+  botOwner: 'professor', // Your name
+  ownerNumber: '2547xxxxx', //Set your number here without + symbol
+  sessionId: "KnightBot;;", // Optional: Put your session here if you don't want to use Render Env Vars
   giphyApiKey: 'qnl7ssQChTdPjsKta2Ax2LMaGXz303tq',
   commandMode: "public",
   maxStoreMessages: 20, 
